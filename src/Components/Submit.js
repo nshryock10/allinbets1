@@ -1,0 +1,175 @@
+import '../App';
+import './Submit.css';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { IoLogoVenmo } from "react-icons/io5";
+import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+
+function Submit(props) {
+
+  const location = useLocation();
+  const questions = location.state?.questions;
+  const updateUser = props.updateDataBase;
+  const userInfo = location.state?.user
+  const CLIENT_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
+  const paymentOptions = {
+    "client-id": 'test',
+    currency: "USD",
+    intent: "capture",
+
+  }
+
+  //Paypal details
+  const buyInAmount =  "10";
+  const processingFee = "1.83";
+  const currency = "USD";
+  const style = { layout: "vertical" };
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+  //Component to wrap button and handle currency change
+  const ButtonWrapper = ({ currency, showSpinner }) => {
+
+    const [{ options, isPending}, dispatch] = usePayPalScriptReducer();
+
+    useEffect(() => {
+      dispatch({
+        type: 'resetOptions',
+        value: {
+          ...options,
+          currency: currency,
+        },
+      });
+    }, [currency, showSpinner]);
+
+    return(<>
+      { (showSpinner && isPending) && <div className="spinner"></div> }
+      <PayPalButtons 
+        style={style}
+        disabled={false}
+        forceReRender={[buyInAmount, currency, style]}
+        fundingSource="venmo"
+        createOrder={(data, actions) => {
+          return actions.order
+              .create({
+                purchase_units:[
+                  {
+                    amount: {
+                      currency_code: currency,
+                      value: buyInAmount
+                    },
+                  },
+                ],
+              })
+              .then((orderId) => {
+                return orderId;
+              });
+        }}
+        onApprove={function (data, actions) {
+          return actions.order.capture().then(() => {
+            setUser({...user, paymentComplete: true, orderId: data.orderID});
+            
+            console.log(data)
+          });
+        }}
+      />
+    </>
+    );
+  }
+  
+
+  const [user, setUser] = useState({
+                                      userInfo: userInfo,
+                                      questions: questions,
+                                      paymentComplete: false,
+                                      paymentTerms: false,
+                                      orderId: null,
+                                      score: 0,
+                                      payout: 0,
+                                      index: null
+                                    })
+
+  const handleChange = (e) => {
+    const checked = e.target.checked;
+
+    if(checked){
+      setUser({...user, paymentTerms: true});
+    
+    }else{
+      setUser({...user, paymentTerms: false});
+    }
+    
+  }
+
+  const handleSubmit = (e) => {
+    //check payment terms are agreed to
+    if(!user.paymentTerms){
+      e.preventDefault();
+      e.stopPropagation();
+      alert('You must agree to the terms of payment.');
+      return false;
+    }
+    //check that payment method is completed
+    if(!user.paymentComplete){
+      e.preventDefault();
+      e.stopPropagation();
+      alert('You must complete your payment before submitting your answers.');
+      return false;
+    }
+    
+  }
+
+  const handleClick = () => {
+    //Change to connect with venmo API
+    setUser({...user, paymentComplete: true});
+    alert('Payment complete');
+  }
+
+  useEffect(() => {
+    updateUser(user, user.index);
+  }, [user])
+
+  return (
+    <div className="main">
+        <h1>Complete payment to submit answers</h1>
+        <form>
+        
+          <input 
+            onChange={(e) => handleChange(e)}
+            className="checkbox"
+            type="checkbox"
+            />
+            <label className="checkbox-label">I have read and agree to the terms of payment</label>
+        </form>
+
+        {(user.paymentTerms) &&
+        (<div id="paypal-button-container">
+          <PayPalScriptProvider options={paymentOptions}>
+            <ButtonWrapper
+              currency={currency}
+              showSpinner={true}
+            />
+          </PayPalScriptProvider>
+        </div>)}
+
+        <div>
+          {(user.paymentComplete && user.paymentComplete) && (
+            <div>
+              <Link to='/' 
+                onClick={handleSubmit}
+              >
+              <button id="hero-button">Finish Payment</button> 
+              </Link>
+        </div> )}  
+
+        {(user.orderId !== null) &&
+          <div className="order-confirmation">
+            <p>{`Thanks for your payment. Your order confirmation is ${user.orderId}`}</p>
+        </div>
+        }
+
+        </div>
+    </div>
+  );
+}
+
+export default Submit;
