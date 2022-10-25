@@ -51,7 +51,7 @@ function App() {
             <Route path='signup' element={<SignUp />} />
             <Route path='questions' element={<Questions />} />
             <Route path='answers' element={<Answers dataBase={dataBase} />} />
-            <Route path='submit' element={<Submit updateDataBase={addUser} test='test' />} />
+            <Route path='checkout' element={<Submit updateDataBase={addUser} test='test' />} />
           </Routes>
         </div>
         <footer>

@@ -54,7 +54,7 @@ function Questions() {
           {questions.map((question, index) => (
               <QuestionCard question={question} key={index}/>
           ))}
-          <Link  onClick={handleSubmit} state={{questions:questions, user:user}} to='/submit' >
+          <Link  onClick={handleSubmit} state={{questions:questions, user:user}} to='/checkout' >
               <button id="hero-button" type="submit" value="Submit Answers">Submit Answers</button>
           </Link>
         

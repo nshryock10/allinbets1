@@ -13,7 +13,7 @@ function Submit(props) {
   const userInfo = location.state?.user
   const CLIENT_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
   const paymentOptions = {
-    "client-id": 'test',
+    "client-id": CLIENT_ID,
     currency: "USD",
     intent: "capture",
 
@@ -22,6 +22,7 @@ function Submit(props) {
   //Paypal details
   const buyInAmount =  "10";
   const processingFee = "1.83";
+  const total = "11.83";
   const currency = "USD";
   const style = { layout: "vertical" };
   const [paymentCompleted, setPaymentCompleted] = useState(false);
@@ -55,7 +56,7 @@ function Submit(props) {
                   {
                     amount: {
                       currency_code: currency,
-                      value: buyInAmount
+                      value: total
                     },
                   },
                 ],
@@ -132,7 +133,21 @@ function Submit(props) {
     <div className="main">
         <h1>Complete payment to submit answers</h1>
         <form>
-        
+          <div className="questionCard">
+            <h3>Checkout</h3>
+            <div className="lineTotal">
+              <p>Buy-in: </p>
+              <p>${buyInAmount}</p>
+            </div>
+            <div className="lineTotal">
+              <p>Processing and Service Fee:</p>
+              <p>${processingFee}</p>
+            </div>
+            <div className="lineTotal total">
+              <p>Total:</p>
+              <p>${total}</p>
+            </div>
+          </div>
           <input 
             onChange={(e) => handleChange(e)}
             className="checkbox"

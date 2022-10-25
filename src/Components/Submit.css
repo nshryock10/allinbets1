@@ -20,6 +20,15 @@
     margin: 20px auto;
 }
 
+.lineTotal{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px;
+}
+
+.total{
+    font-weight: 800;
+}
 
 .venmo-button {
         /* Position */
