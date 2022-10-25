@@ -35,7 +35,7 @@ function Questions() {
       }
     }
 
-    navigate("/submit", {state:{questions:questions, user:user}});
+    navigate("/checkout", {state:{questions:questions, user:user}});
     //Incorporate this to backend once ready
     /*
     let result = await submitForm(event.target);
