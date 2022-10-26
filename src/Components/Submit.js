@@ -11,9 +11,11 @@ function Submit(props) {
   const questions = location.state?.questions;
   const updateUser = props.updateDataBase;
   const userInfo = location.state?.user
-  const CLIENT_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
+  const CLIENT_ID = 'AflGXddWb4KVamd5un9eY3zdBwkFwm0OfRztruHurzIKaHAj_ZEm4QSzFcaXDXW4gqDhlsu30_s2rmEC';
   const paymentOptions = {
     "client-id": CLIENT_ID,
+    components: "buttons,funding-eligibility",
+    "enable-funding": "venmo",
     currency: "USD",
     intent: "capture",
 
@@ -43,12 +45,12 @@ function Submit(props) {
     }, [currency, showSpinner]);
 
     return(<>
-      { (showSpinner && isPending) && <div className="spinner"></div> }
+      { (isPending) && <div className="spinner"></div> }
       <PayPalButtons 
         style={style}
         disabled={false}
         forceReRender={[buyInAmount, currency, style]}
-        fundingSource="venmo"
+        //fundingSource="venmo"
         createOrder={(data, actions) => {
           return actions.order
               .create({
@@ -129,6 +131,10 @@ function Submit(props) {
     updateUser(user, user.index);
   }, [user])
 
+/*
+  
+*/
+
   return (
     <div className="main">
         <h1>Complete payment to submit answers</h1>
@@ -161,10 +167,11 @@ function Submit(props) {
           <PayPalScriptProvider options={paymentOptions}>
             <ButtonWrapper
               currency={currency}
-              showSpinner={true}
+              showSpinner={false}
             />
           </PayPalScriptProvider>
-        </div>)}
+        </div>
+        )}
 
         <div>
           {(user.paymentComplete && user.paymentComplete) && (
