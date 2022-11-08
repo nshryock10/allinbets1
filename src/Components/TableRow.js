@@ -16,10 +16,13 @@ function TableRow(props) {
     <tbody onClick={handleClick}>
 
       {users.map((user) => {
+        //Check if user completed payment before displaying
+        console.log(user)
+        if(user.paymentComplete){
         return (
           <tr key={user.index}>
             {columns.map(({ accessor }) => {
-        
+          
             let tData = '-';
             if(accessor === 'userName'){
               tData = user.userInfo.userName;
@@ -33,7 +36,7 @@ function TableRow(props) {
             
           })}
 
-      </tr>);
+      </tr>);}
       })}
 
     </tbody>

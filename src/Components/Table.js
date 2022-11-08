@@ -34,7 +34,7 @@ function Table(props) {
 
         //score data
         const newState = data.map(user => {
-            const [newScores, totalScore] = scoreAnswers(user.questions, answerKey);
+            const [newScores, totalScore] = scoreAnswers(user, answerKey);
             return {...user, questions: newScores, score: totalScore}
         }) 
 

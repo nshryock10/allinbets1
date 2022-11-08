@@ -22,26 +22,35 @@ export const getUserIndex = (userName, dataSet) => {
 //INPUT: user questions & answers (userAnswers) and the question key (questionKey)
 //OUTPUT: array with objects that include the score
 export const scoreAnswers = (userAnswers, questionKey) => {
+  
 
-    const keyLength = questionKey.length
+    const keyLength = questionKey.length;
+    //Cannot define paymentComplete for some reason 
+    let payment = userAnswers.paymentComplete;
     let key = questionKey;
-    let answers = userAnswers;
+    let answers = userAnswers.questions;
     let totalScore = 0;
 
-    for(let i = 0; i < keyLength; i++){
-        let answer = answers[i].answer;
-        let keyAnswer = key[i].answer;
+    //Check if payment is compelte
+    if(!payment){
+      console.log('User did not finish payment');
+      return [userAnswers, 0]
+    }else {
+      for(let i = 0; i < keyLength; i++){
+          let answer = answers[i].answer;
+          let keyAnswer = key[i].answer;
 
-        //If there is an answer and the answer equals the key then score = points 
-        if(keyAnswer !== null && answer === keyAnswer){
-            answers[i].score = key[i].points;
-            totalScore += key[i].points;
-        }else if(keyAnswer !== null && answer !== keyAnswer){
-            answers[i].score = 0;
-        }
-    }
+          //If there is an answer and the answer equals the key then score = points 
+          if(keyAnswer !== null && answer === keyAnswer){
+              answers[i].score = key[i].points;
+              totalScore += key[i].points;
+          }else if(keyAnswer !== null && answer !== keyAnswer){
+              answers[i].score = 0;
+          }
+      }
 
-    return [answers, totalScore];
+      return [answers, totalScore];
+  }
 }
 
 //Assigns the payout for users based on score and pot
@@ -170,12 +179,10 @@ export const getData = () => {
             answer: '56',
             score: null
           }],
-        paymentInfo: {
-          paymentMethod: null,
-          paymentComplete: false,
-          paymentTerms: true,
-          orderId: '123456',
-        },
+        paymentMethod: null,
+        paymentComplete: true,
+        paymentTerms: true,
+        orderId: '123456',
         score: 0,
         payout: 0,
         index: 0
@@ -231,12 +238,10 @@ export const getData = () => {
             answer: '45',
             score: null
           }],
-        paymentInfo: {
-          paymentMethod: null,
-          paymentComplete: '1',
-          paymentTerms: true,
-          orderId: '12345',
-        },
+        paymentMethod: null,
+        paymentComplete: false,
+        paymentTerms: true,
+        orderId: '12345',
         score: 0,
         payout: 0,
         index: 1
@@ -292,12 +297,10 @@ export const getData = () => {
             answer: '42',
             score: null
           }],
-        paymentInfo: {
-          paymentMethod: null,
-          paymentComplete: '1',
-          paymentTerms: true,
-          orderId: '1234',
-        },
+        paymentMethod: null,
+        paymentComplete: true,
+        paymentTerms: true,
+        orderId: '1234',
         score: 0,
         payout: 0,
         index: 2
@@ -395,4 +398,11 @@ export const getQuestions = () => {
       score: null
      }
   ]);
+}
+
+export const getDate = () => {
+  const today = new Date();
+  const todayDate = [today.getMonth(), today.getDate(), today.getFullYear()];
+
+  return todayDate;
 }

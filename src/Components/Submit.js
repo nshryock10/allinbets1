@@ -12,8 +12,9 @@ function Submit(props) {
   const updateUser = props.updateDataBase;
   const userInfo = location.state?.user
   const CLIENT_ID = 'AflGXddWb4KVamd5un9eY3zdBwkFwm0OfRztruHurzIKaHAj_ZEm4QSzFcaXDXW4gqDhlsu30_s2rmEC';
+  const sb_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
   const paymentOptions = {
-    "client-id": CLIENT_ID,
+    "client-id": sb_ID,
     components: "buttons,funding-eligibility",
     "enable-funding": "venmo",
     currency: "USD",
@@ -62,6 +63,9 @@ function Submit(props) {
                     },
                   },
                 ],
+                application_context: {
+                  shipping_preference: "NO_SHIPPING"
+                }
               })
               .then((orderId) => {
                 return orderId;
@@ -74,6 +78,9 @@ function Submit(props) {
             console.log(data)
           });
         }}
+        onError={function (err){
+          alert(`Something when wrong, try signing up again. Error code ${err}`)
+        } }
       />
     </>
     );
@@ -83,6 +90,7 @@ function Submit(props) {
   const [user, setUser] = useState({
                                       userInfo: userInfo,
                                       questions: questions,
+                                      paymentMethod: null,
                                       paymentComplete: false,
                                       paymentTerms: false,
                                       orderId: null,
@@ -121,15 +129,17 @@ function Submit(props) {
     
   }
 
+  /*
   const handleClick = () => {
     //Change to connect with venmo API
     setUser({...user, paymentComplete: true});
     alert('Payment complete');
   }
-
+*/
   useEffect(() => {
     updateUser(user, user.index);
   }, [user])
+
 
 /*
   
@@ -162,7 +172,7 @@ function Submit(props) {
             <label className="checkbox-label">I have read and agree to the terms of payment</label>
         </form>
 
-        {(user.paymentTerms) &&
+        {(user.paymentTerms && !user.paymentComplete) &&
         (<div id="paypal-button-container">
           <PayPalScriptProvider options={paymentOptions}>
             <ButtonWrapper
@@ -175,6 +185,7 @@ function Submit(props) {
 
         <div>
           {(user.paymentComplete && user.paymentComplete) && (
+            
             <div>
               <Link to='/' 
                 onClick={handleSubmit}
