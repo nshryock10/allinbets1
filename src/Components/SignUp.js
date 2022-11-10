@@ -21,7 +21,7 @@ function SignUp() {
     e.preventDefault();
     e.stopPropagation();
 
-    let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
 
     //Check that user completed all fields
     if( email === '' ||
@@ -38,14 +38,13 @@ function SignUp() {
 
         return false;
       
-      }else if (!regEx.test(email)){ //Check if email is valid
-        alert('Email is not valid. Try again')
-        return false;
-      }
+      }else if (emailMessage ||
+                userNameMessage ||
+                dateMessage){
+          alert('Correct input errors')
+          return false;
+        }
       
-      //Check is username is taken
-      //Check if mm, dd, yyyy is reasonable
-
       //Navigate to next page if all conditions pass
       navigate("/questions", {state:{
           email: email,
@@ -63,6 +62,7 @@ function SignUp() {
     //Call function to check if username is taken
     const value = e.currentTarget.value;
     const inputID = e.target.id;
+    let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     
     switch(inputID){
       case('username'):
@@ -71,7 +71,13 @@ function SignUp() {
         }
         break;
       case('email'): 
+      
         //Validate email
+        if (!regEx.test(email)){ //Check if email is valid
+          setEmailMessage(true);
+        }else{
+          setEmailMessage(false)
+        }
         break;
       case('birthday-input'):
         //Check dates
@@ -98,9 +104,11 @@ function SignUp() {
                 id="email"
                 type="email"
                 requried
-                onChange={(e) => setEmail(e.currentTarget.value)}>
+                onChange={(e) => setEmail(e.currentTarget.value)}
+                onBlur={(e) => handleBlur(e)}>
             </input>
           </div>
+          {emailMessage && <p className="form-error">E-Mail is not valid</p>}
           <div className="signup-input-container">
             <label 
                 className="signup-label"
