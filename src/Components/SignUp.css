@@ -99,3 +99,10 @@
     font-family: Arial, Helvetica, sans-serif;
     color: var(--purple);
 }
+
+.form-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 0;
+    margin-bottom: 0;
+}

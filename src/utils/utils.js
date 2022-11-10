@@ -239,7 +239,7 @@ export const getData = () => {
             score: null
           }],
         paymentMethod: null,
-        paymentComplete: false,
+        paymentComplete: true,
         paymentTerms: true,
         orderId: '12345',
         score: 0,
@@ -399,10 +399,80 @@ export const getQuestions = () => {
      }
   ]);
 }
-
+//Returns the current date in an array with [mm, dd, yyyy]
 export const getDate = () => {
   const today = new Date();
-  const todayDate = [today.getMonth(), today.getDate(), today.getFullYear()];
+  //Month is returning 10??
+  const todayDate = [today.getMonth()+1, today.getDate(), today.getFullYear()];
 
   return todayDate;
+}
+
+export const verifyAge = (mm, dd, yyyy) => {
+
+  const today = getDate();
+
+  if ((today[2] - yyyy < 21)) { //If year is less than 21 no need to check month and day
+    
+    alert('You must be 21 to play. Come back next year!')
+    return false;
+  }else if ((today[2] - yyyy === 21)) { //If year = 21 then check the month and day
+    
+    if(today[0] - mm < 0){ //If birthday is same year check the month
+      
+      alert('You must be 21 to play. Come back next year!') 
+      return false;
+    } else if (today[1] - dd < 0){ //If birthday is same month check the day
+      
+      alert('You must be 21 to play. Come back next year!') 
+      return false;
+    }
+  }
+
+  return true //return true if none of the fail conditions are met
+}
+
+export const checkUserName = (username) => {
+  const dataBase = getData();
+  let userNameTaken = false;
+  
+  
+  dataBase.forEach(user => {
+
+    if(user.userInfo.userName === username){
+      console.log('found user name');
+      userNameTaken = true;
+    }
+  })
+  
+  return userNameTaken;
+
+}
+
+export const verifyForm = (value, field) => {
+
+  const date = getDate();
+
+  if(field === 'mm'){
+    if(value > 12 || value < 1 || isNaN(value)){
+      return true;
+    }else{
+      return false;
+    }
+  }else if(field === 'dd'){
+    if(value > 31 || value < 1 || isNaN(value)){
+      return true;
+    }else{
+      console.log('month valid')
+      return false;
+    }
+  }else if(field === 'yyyy'){
+    if(value > date[2] || value < 1900 || isNaN(value)){
+      return true;
+    }else{
+      console.log('month valid')
+      return false;
+    }
+  }
+
 }

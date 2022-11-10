@@ -17,7 +17,6 @@ function TableRow(props) {
 
       {users.map((user) => {
         //Check if user completed payment before displaying
-        console.log(user)
         if(user.paymentComplete){
         return (
           <tr key={user.index}>

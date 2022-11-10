@@ -1,27 +1,88 @@
 import '../App';
 import './SignUp.css';
-import {useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { checkUserName, verifyAge, verifyForm } from '../utils/utils';
 
 function SignUp() {
 
   const [email, setEmail] = useState('');
+  const [emailMessage, setEmailMessage] = useState(false);
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
+  const [userNameMessage, setUserNameMessage] = useState(false);
   const [mm, setMm] = useState('');
   const [dd, setDd] = useState('');
   const [yyyy, setYyyy] = useState('');
+  const [dateMessage, setDateMessage] = useState(false);
+  let navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    //Check that user completed all fields
     if( email === '' ||
         name === null ||
         userName === null ||
         mm === null ||
         dd === null ||
         yyyy === null){
+
         alert('Please fill out all fields')
+        return false;
+
+      }else if (!verifyAge(mm, dd, yyyy)){ //Check that user is 21
+
+        return false;
+      
+      }else if (!regEx.test(email)){ //Check if email is valid
+        alert('Email is not valid. Try again')
+        return false;
       }
+      
+      //Check is username is taken
+      //Check if mm, dd, yyyy is reasonable
+
+      //Navigate to next page if all conditions pass
+      navigate("/questions", {state:{
+          email: email,
+          name:name,
+          userName: userName,
+          mm: mm,
+          dd: dd,
+          yyyy: yyyy,
+          paymentTerms: false
+        }});
+      
   }
+
+  const handleBlur = (e) => {
+    //Call function to check if username is taken
+    const value = e.currentTarget.value;
+    const inputID = e.target.id;
+    
+    switch(inputID){
+      case('username'):
+        if(checkUserName(value)){  
+          setUserNameMessage(true);
+        }
+        break;
+      case('email'): 
+        //Validate email
+        break;
+      case('birthday-input'):
+        //Check dates
+        if(verifyForm(value, e.target.placeholder)){
+          setDateMessage(true);
+        }else{
+          setDateMessage(false);
+        }
+        break;
+    }
+    }
 
   return (
     <div className="main">
@@ -53,29 +114,49 @@ function SignUp() {
             ></input>
           </div>
           <div className="signup-input-container">
-            <label className="signup-label">USERNAME:</label>
-            <input className="signup-input" onChange={(e) => setUserName(e.currentTarget.value)}></input>
+            <label className="signup-label"
+            >USERNAME:</label>
+            <input 
+              className="signup-input"
+              id="username"
+              onChange={(e) => {
+                setUserName(e.currentTarget.value)
+                setUserNameMessage(false)
+              }}
+              onBlur={(e) => handleBlur(e)}
+            ></input>
           </div>
+          {userNameMessage && <p className="form-error">User name is not available</p>}
           <div className="signup-input-container">
             <label className="signup-label">BIRTHDAY:</label>
               <div className="birthday-container">
                 <input className="signup-input" 
                         id="birthday-input" 
                         placeholder='mm' 
-                        onChange={(e) => setMm(e.currentTarget.value)}>
+                        onChange={(e) => {
+                          setMm(e.currentTarget.value)
+                          //setDateMessage(false);
+                        }}
+                        onBlur={(e) => handleBlur(e)}>
                   </input>
                   <input className="signup-input" 
                           id="birthday-input" 
                           placeholder='dd' 
-                          onChange={(e) => setDd(e.currentTarget.value)}>
+                          onChange={(e) => {
+                            setDd(e.currentTarget.value)
+                            //setDateMessage(false);
+                          }}
+                          onBlur={(e) => handleBlur(e)}>
                   </input>
                   <input className="signup-input"
                           id="birthday-input"
                           placeholder='yyyy' 
-                          onChange={(e) => setYyyy(e.currentTarget.value)}>
+                          onChange={(e) => setYyyy(e.currentTarget.value)}
+                          onBlur={(e) => handleBlur(e)}>
                   </input>
               </div>
           </div>
+          {dateMessage && <p className="form-error">Date is not valid</p>}
           <div className="checkbox-container">
             <input className="checkbox" type="checkbox"></input>
             <label className="checkbox-label">I have read and agree to the terms of use</label>
@@ -88,31 +169,13 @@ function SignUp() {
             mm === '' ||
             dd === '' ||
             yyyy === '') ?
-          (<Link to='/questions' className="disable-link" state={
-            {
-              email: email,
-              name:name,
-              userName: userName,
-              mm: mm,
-              dd: dd,
-              yyyy: yyyy,
-              paymentTerms: false
-            }} 
-          >
+          (<Link to='/questions' className="disable-link">
             <button onClick={handleClick} id="disable-button">Submit</button>
           </Link>) : 
-          (<Link to='/questions' state={
-            {
-              email: email,
-              name:name,
-              userName: userName,
-              mm: mm,
-              dd: dd,
-              yyyy: yyyy,
-              paymentTerms: false
-            }} 
+          (<Link to='/questions' 
+            onClick={handleClick}
           >
-            <button onClick={handleClick} id="hero-button">Submit</button>
+            <button  id="hero-button">Submit</button>
           </Link>)}
         </div>
     </div>
