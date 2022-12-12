@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IoLogoVenmo } from "react-icons/io5";
 import { PayPalScriptProvider, PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import {addUser as addUserToDB } from '../utils/api';
 
 function Submit(props) {
 
@@ -126,16 +127,9 @@ function Submit(props) {
       alert('You must complete your payment before submitting your answers.');
       return false;
     }
-    
+    addUserToDB(user);
   }
 
-  /*
-  const handleClick = () => {
-    //Change to connect with venmo API
-    setUser({...user, paymentComplete: true});
-    alert('Payment complete');
-  }
-*/
   useEffect(() => {
     updateUser(user, user.index);
   }, [user])

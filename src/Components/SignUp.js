@@ -21,8 +21,6 @@ function SignUp() {
     e.preventDefault();
     e.stopPropagation();
 
-    
-
     //Check that user completed all fields
     if( email === '' ||
         name === null ||
@@ -53,7 +51,7 @@ function SignUp() {
           mm: mm,
           dd: dd,
           yyyy: yyyy,
-          paymentTerms: false
+          useTerms: false
         }});
       
   }

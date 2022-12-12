@@ -6,6 +6,7 @@ import superbowl_logo from '../images/superbowl_logo.png';
 import { getAnswerKey } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import * as Icon from 'react-bootstrap-icons';
+import { addUser } from '../utils/api';
 
 function HomePage (props) {
 
@@ -14,6 +15,7 @@ function HomePage (props) {
     const answerKey = getAnswerKey();
 
     const onClick = () => {
+      addUser();
       console.log(dataBase)
     }
       

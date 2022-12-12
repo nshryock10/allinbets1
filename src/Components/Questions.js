@@ -18,7 +18,8 @@ function Questions() {
                 userName: location.state?.userName,
                 mm: location.state?.mm,
                 dd: location.state?.dd,
-                yyyy: location.state?.yyyy
+                yyyy: location.state?.yyyy,
+                useTerms: location.state?.useTerms
                 };
 
   //Questions will need to be imported from separate file

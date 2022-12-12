@@ -8,6 +8,7 @@ import Answers from './Components/Answers';
 import Nav from './Components/Nav';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { generateUserIndex, getData } from './utils/utils';
+import { addUser as addUserToDB } from './utils/api';
 
 function App() {
 
@@ -31,7 +32,6 @@ function App() {
   }
 
   const addUser = (user, index) => {
-    
     //Check for user index
     if(index){
       setDataBase(data => [...data.slice(0,index), user, ...data.slice(index+1)])
