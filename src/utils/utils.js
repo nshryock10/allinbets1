@@ -1,3 +1,5 @@
+import { getUsers as getDataBase } from "./api";
+
 //Generates an index for the user based on the length of the database
 //INPUT: database array from main App
 //OUTPUT: id field for user infomation that matches array input, integer
@@ -11,8 +13,8 @@ export const generateUserIndex = (dataBase) => {
 //OUTPUT: The index of the input username, integer
 export const getUserIndex = (userName, dataSet) => {
     if(userName !== "Select User"){
-        const userIndex = dataSet.filter(user => user.userInfo.userName === userName);
-        return userIndex[0].index;}
+        const userIndex = dataSet.filter(user => user.username === userName);
+        return userIndex[0].id;}
     else{
         return null;
     }
@@ -92,9 +94,8 @@ export const sortList = (list, field) => {
             )*-1
 
         }else if(field === 'userName'){
-            
             return (
-                a['userInfo']['userName'].toString().localeCompare(b['userInfo']['userName'].toString(), 'en', {numeric: true})
+                a['username'].toString().localeCompare(b['username'].toString(), 'en', {numeric: true})
             )
 
         }
@@ -110,13 +111,13 @@ export const searchUserName = (query, list) => {
     let match;
     if(query){
         match = list.find(user => {
-        if(user.userInfo.userName.toLowerCase().includes(query.toLowerCase())){
+        if(user.username.toLowerCase().includes(query.toLowerCase())){
             return user;
         }
     })}
     if(match){
         //Return the object and display name, score, and payout on homepage
-        return [match.userInfo.userName, match.payout, match.score]
+        return [match.username, match.payout, match.score]
     }else{
         return null;
     }
@@ -432,19 +433,20 @@ export const verifyAge = (mm, dd, yyyy) => {
   return true //return true if none of the fail conditions are met
 }
 
-export const checkUserName = (username) => {
-  const dataBase = getData();
+export const checkUserName = async (username) => {
+
+  const dataBase = await getDataBase();
   let userNameTaken = false;
   
   
   dataBase.forEach(user => {
-
-    if(user.userInfo.userName === username){
+    if(user.username == username){
       console.log('found user name');
       userNameTaken = true;
     }
   })
   
+  console.log(userNameTaken)
   return userNameTaken;
 
 }

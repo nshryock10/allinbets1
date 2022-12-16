@@ -11,6 +11,7 @@ import { addUser } from '../utils/api';
 function HomePage (props) {
 
     const dataBase = props.dataBase;
+    const payData = props.paymentData;
     const pot = 100000;
     const answerKey = getAnswerKey();
 
@@ -68,6 +69,7 @@ function HomePage (props) {
           
           <Table 
             data={dataBase} 
+            payData={payData}
             answerKey={answerKey}
             pot={pot}
           />

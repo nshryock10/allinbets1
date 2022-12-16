@@ -2,6 +2,7 @@ import '../App';
 import './Answers.css';
 import { useEffect, useState } from 'react';
 import { getUserIndex, sortList } from '../utils/utils';
+import { getUsers, getUserAnswers } from '../utils/api';
 
 function Answers(props) {
 
@@ -9,15 +10,39 @@ function Answers(props) {
   const [userIndex, setUserIndex] = useState(null);
   const [users, setUsers] = useState(props.dataBase);
   const [sortedUsers, setSortedUsers] = useState(sortList(props.dataBase))
+  const [userData, setUserData] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() =>{
-      setUserIndex(getUserIndex(selectedUser, users));
+    if(selectedUser !== 'Select User'){
+      setUserIndex(getUserIndex(selectedUser, userData)); 
+      getAnswers(getUserIndex(selectedUser, userData))
+    }
     }, [selectedUser]);
 
   useEffect(() => {
-    setSortedUsers(sortList(users, 'userName'));
+    //Get payment info
+      getPayments();
   }, [])
 
+  const getAnswers = async (id) => {
+    const setMainAnswers = (questions) => {
+      setQuestions(questions);
+    }
+
+    const userQuestions = await getUserAnswers(id);
+    setMainAnswers(userQuestions);
+  }
+  const getPayments = async () => {
+
+    const setMainPaymentInfo = (userData) => {
+      setUserData(userData);
+      setSortedUsers(sortList(userData, 'userName'));
+    }
+
+    const userData = await getUsers();
+    setMainPaymentInfo(userData);
+  }
 
   return (
     <div >
@@ -39,14 +64,14 @@ function Answers(props) {
             {sortedUsers.map((user, index) => 
               <option 
                 key={index}
-                value={user.userInfo.userName}
+                value={user.username}
               >
-                  {user.userInfo.userName}
+                  {user.username}
               </option>
             )}
         </select>
 
-        {userIndex !== null && users[userIndex].questions.map( (question, index) => (
+        {userIndex !== null && questions.map( (question, index) => (
           <div
             key={index}
             className="main-container"

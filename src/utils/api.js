@@ -1,10 +1,58 @@
+import { v4 as uuid4 } from 'uuid';
+//const { v4: uuidv4 } = require("uuid");
+
 const API_ENDPOINT = "http://localhost:3000";
 
+//Get all users from database
+export const getUsers = async () => {
+    const response = await fetch(`${API_ENDPOINT}/users`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+          }
+    })
 
-//Add user
+    const users = await response.json();
+    
+    return users;
+}
+
+//Get user payment info
+export const getPaymentInfo = async () => {
+    const response = await fetch(`${API_ENDPOINT}/paymentinfo`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+          }
+    })
+
+    const paymentInfo = await response.json();
+
+    return paymentInfo;
+}
+
+export const getUserAnswers = async (id) => {
+    
+    const response = await fetch(`${API_ENDPOINT}/answers/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+          }
+    })
+
+    const answers = await response.json();
+
+    return answers;
+}
+
+//Add user to data base
 export const addUser = async (user) => {
-console.log('Updating database...')
+
+//Generate new Id
+const newId = uuid4();
+
 const userInfo = {
+    id: newId,
     name: user.userInfo.name,
     username: user.userInfo.userName,
     birthday: `${user.userInfo.yyyy}-${user.userInfo.mm}-${user.userInfo.dd}`,
@@ -32,7 +80,6 @@ const paymentInfo = {
             "Content-Type": "application/json",
           }
     })
-    const newUser = await response.json();
+    response.status(201).send();
 
-    return newUser;
 }

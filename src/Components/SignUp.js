@@ -56,7 +56,7 @@ function SignUp() {
       
   }
 
-  const handleBlur = (e) => {
+  const handleBlur = async (e) => {
     //Call function to check if username is taken
     const value = e.currentTarget.value;
     const inputID = e.target.id;
@@ -64,7 +64,9 @@ function SignUp() {
     
     switch(inputID){
       case('username'):
-        if(checkUserName(value)){  
+        const userNameTaken = await checkUserName(value)
+        if(userNameTaken){  
+          console.log(userNameTaken)
           setUserNameMessage(true);
         }
         break;

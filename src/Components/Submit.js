@@ -11,7 +11,7 @@ function Submit(props) {
   const location = useLocation();
   const questions = location.state?.questions;
   const updateUser = props.updateDataBase;
-  const userInfo = location.state?.user
+  const userInfo = location.state?.user 
   const CLIENT_ID = 'AflGXddWb4KVamd5un9eY3zdBwkFwm0OfRztruHurzIKaHAj_ZEm4QSzFcaXDXW4gqDhlsu30_s2rmEC';
   const sb_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
   const paymentOptions = {
@@ -76,7 +76,6 @@ function Submit(props) {
           return actions.order.capture().then(() => {
             setUser({...user, paymentComplete: true, orderId: data.orderID});
             
-            console.log(data)
           });
         }}
         onError={function (err){

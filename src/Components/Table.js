@@ -10,9 +10,10 @@ import { scoreAnswers, getAnswerKey, setPayOut } from '../utils/utils';
 function Table(props) {
 
     const data = props.data;
+    const payData = props.payData;
     const answerKey = getAnswerKey();
     const columns = [
-        {label: 'User', accessor: 'userName'},
+        {label: 'User', accessor: 'username'},
         {label: 'Score', accessor: 'score'},
         {label: 'Payout', accessor: 'payout'}
     ]
@@ -22,25 +23,32 @@ function Table(props) {
     const [searchResult, setSearchResult] = useState(null);
 
     useEffect(() => {
-
+        setTableData(data);
+        //Update and implement new payout method
+        /*
         const getPayout = async (data) => {
             const payOut = await setPayOut(props.pot, data)
             setTableData(payOut);
         }
+        
 
         const setScorePayout = async (data) => {
             getPayout(data);
         }
-
-        //score data
+        */
+        
+        //*** Add new GET request for answer key and score answers in App.js */
+        //score data  
+        /* 
         const newState = data.map(user => {
             const [newScores, totalScore] = scoreAnswers(user, answerKey);
             return {...user, questions: newScores, score: totalScore}
         }) 
-
+        
+    
         //Set table data as sorted and scored
         setScorePayout(newState);
-
+        */
     }, [data])
 
  
@@ -83,7 +91,7 @@ function Table(props) {
                         </tr>
                 </tbody>
             }
-            <TableRow users={tableData} columns={columns} />
+            <TableRow users={tableData} payData={payData} columns={columns} />
         </table>
     </div>
   );
