@@ -45,6 +45,19 @@ export const getUserAnswers = async (id) => {
     return answers;
 }
 
+export const getQuestions = async () => {
+    const response = await fetch(`${API_ENDPOINT}/questions`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+          }
+    })
+
+    const questions = await response.json();
+
+    return questions;
+}
+
 //Add user to data base
 export const addUser = async (user) => {
 
@@ -80,6 +93,6 @@ const paymentInfo = {
             "Content-Type": "application/json",
           }
     })
-    response.status(201).send();
+    response.json();
 
 }

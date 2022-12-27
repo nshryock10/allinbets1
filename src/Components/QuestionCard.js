@@ -28,7 +28,7 @@ function QuestionCard(props) {
                 <label>{option}</label>
             </div>)}
           
-            {!question.options && 
+            {question.options.length === 0 && 
             <div>
                 <input 
                     type='text'

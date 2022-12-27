@@ -72,6 +72,7 @@ function Answers(props) {
         </select>
 
         {userIndex !== null && questions.map( (question, index) => (
+          
           <div
             key={index}
             className="main-container"
@@ -81,9 +82,9 @@ function Answers(props) {
                 <p className="question question-text">{question.question}</p>
                 <p className="answer question-text">{question.answer}</p> 
               </div>
-              {(question.score !== null && question.score > 0) ? 
-              (<p className=" score correct-score">+{question.score}</p>) : 
-              (<p className="score incorrect-score"> {question.score}</p>)}
+              {(question.answer_score !== null && question.answer_score > 0) ? 
+              (<p className=" score correct-score">+{question.answer_score}</p>) : 
+              (<p className="score incorrect-score"> {question.answer_score}</p>)}
             </div>
             
             

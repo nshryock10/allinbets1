@@ -446,7 +446,6 @@ export const checkUserName = async (username) => {
     }
   })
   
-  console.log(userNameTaken)
   return userNameTaken;
 
 }
@@ -465,14 +464,12 @@ export const verifyForm = (value, field) => {
     if(value > 31 || value < 1 || isNaN(value)){
       return true;
     }else{
-      console.log('month valid')
       return false;
     }
   }else if(field === 'yyyy'){
     if(value > date[2] || value < 1900 || isNaN(value)){
       return true;
     }else{
-      console.log('month valid')
       return false;
     }
   }

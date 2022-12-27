@@ -7,25 +7,28 @@ function TableRow(props) {
 
     const columns = props.columns;
     const [userData, setUserData] = useState([]);
+    
 
 
   useEffect(() => {
     //Get payment info
-      getPayments();
+      getData();
   }, [])
 
-  const getPayments = async () => {
+  const getData = async () => {
 
-    const setMainPaymentInfo = (userData) => {
+    const setData = (userData) => {
       setUserData(userData);
     }
 
     const userData = await getUsers();
-    setMainPaymentInfo(userData);
+    setData(userData.sort((a,b) => {
+      if(Number(b.payout) > Number(a.payout)) return 1;
+      if(Number(b.payout) < Number(a.payout)) return -1;
+      if(b.score > a.score) return 1;
+      if(b.score < a.score) return -1;
+    }));
   }
-
-  //User efffect to score the rows when data base is updated
-
   return (
       
       
@@ -45,7 +48,7 @@ function TableRow(props) {
               }else if(accessor === 'score'){
                 tData = user.score;
               }else if(accessor === 'payout'){
-                tData = `$${user.payout}`;
+                tData = `$${Number(user.payout).toFixed(2)}`;
               }
 
               return <td key={accessor}>{tData}</td>;

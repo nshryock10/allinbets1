@@ -7,7 +7,7 @@ import Submit from './Components/Submit';
 import Answers from './Components/Answers';
 import Nav from './Components/Nav';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import { generateUserIndex, getData } from './utils/utils';
+import { generateUserIndex } from './utils/utils';
 import { getPaymentInfo, getUsers } from './utils/api';
 
 function App() {
@@ -27,11 +27,6 @@ function App() {
       setDataBase(data);
       setPaymentInfo(paymentData);
     } 
-    
-    //Old implement
-    //const data = await getData();
-    //setMainDataBase(data);
-    
 
     //Postgres data
     const dbData = await getUsers();
