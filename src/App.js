@@ -21,7 +21,6 @@ function App() {
 
     if(dataBase.length === 0){
       getDataBase();
-      console.log(gameInfo)
     }
 
   }, [userCount])

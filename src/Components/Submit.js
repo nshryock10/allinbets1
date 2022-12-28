@@ -49,7 +49,7 @@ function Submit(props) {
     }, [currency, showSpinner]);
 
     return(<>
-      { (isPending) && <div className="spinner"></div> }
+      { (isPending) && <div className="spinner">Loading...</div> }
       <PayPalButtons 
         style={style}
         disabled={false}
@@ -76,7 +76,8 @@ function Submit(props) {
         }}
         onApprove={function (data, actions) {
           return actions.order.capture().then(() => {
-            setUser({...user, paymentComplete: true, orderId: data.orderID});
+            console.log(data)
+            setUser({...user, paymentComplete: true, orderId: data.orderID, paymentMethod: data.paymentSource, payerId: data.payerID});
             
           });
         }}
@@ -96,6 +97,7 @@ function Submit(props) {
                                       paymentComplete: false,
                                       paymentTerms: false,
                                       orderId: null,
+                                      payerId: null,
                                       score: 0,
                                       payout: 0,
                                       index: null
@@ -175,7 +177,11 @@ function Submit(props) {
           </PayPalScriptProvider>
         </div>
         )}
-
+        {(user.orderId !== null) &&
+          <div className="order-confirmation">
+            <p>{`Thanks for your payment. Your order confirmation is ${user.orderId}`}</p>
+          </div>
+        }
         <div>
           {(user.paymentComplete && user.paymentComplete) && (
             
@@ -187,11 +193,7 @@ function Submit(props) {
               </Link>
         </div> )}  
 
-        {(user.orderId !== null) &&
-          <div className="order-confirmation">
-            <p>{`Thanks for your payment. Your order confirmation is ${user.orderId}`}</p>
-        </div>
-        }
+        
 
         </div>
     </div>

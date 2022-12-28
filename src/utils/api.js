@@ -90,7 +90,8 @@ const paymentInfo = {
     paymentTerms: user.paymentTerms,
     paymentComplete: user.paymentComplete,
     paymentMethod: user.paymentMethod,
-    orderId: user.orderId
+    orderId: user.orderId,
+    payerId: user.payerId
 }
 
     const response = await fetch(`${API_ENDPOINT}/users`, {

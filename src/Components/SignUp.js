@@ -15,6 +15,7 @@ function SignUp() {
   const [dd, setDd] = useState('');
   const [yyyy, setYyyy] = useState('');
   const [dateMessage, setDateMessage] = useState(false);
+  const [useTerms, setUseTerms] = useState(false);
   let navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -51,9 +52,18 @@ function SignUp() {
           mm: mm,
           dd: dd,
           yyyy: yyyy,
-          useTerms: false
+          useTerms: useTerms
         }});
       
+  }
+
+  const handleCheckChange = e => {
+    const checked = e.target.checked;
+    if(checked){
+      setUseTerms(checked)
+    }else{
+      setUseTerms(checked)
+    }
   }
 
   const handleBlur = async (e) => {
@@ -66,7 +76,6 @@ function SignUp() {
       case('username'):
         const userNameTaken = await checkUserName(value)
         if(userNameTaken){  
-          console.log(userNameTaken)
           setUserNameMessage(true);
         }
         break;
@@ -166,7 +175,7 @@ function SignUp() {
           </div>
           {dateMessage && <p className="form-error">Date is not valid</p>}
           <div className="checkbox-container">
-            <input className="checkbox" type="checkbox"></input>
+            <input className="checkbox" type="checkbox" onChange={(e)=>handleCheckChange(e)}></input>
             <label className="checkbox-label">I have read and agree to the terms of use</label>
           </div>
         </form>
@@ -176,13 +185,12 @@ function SignUp() {
             userName === '' ||
             mm === '' ||
             dd === '' ||
-            yyyy === '') ?
+            yyyy === '' ||
+            !useTerms) ?
           (<Link to='/questions' className="disable-link">
             <button onClick={handleClick} id="disable-button">Submit</button>
           </Link>) : 
-          (<Link to='/questions' 
-            onClick={handleClick}
-          >
+          (<Link to='/questions' onClick={handleClick} >
             <button  id="hero-button">Submit</button>
           </Link>)}
         </div>

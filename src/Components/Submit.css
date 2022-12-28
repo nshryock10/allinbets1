@@ -60,4 +60,16 @@
 
 }
 
+.checkbox{
+    margin: 10px 7px; 
+}
 
+.order-confirmation{
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.order-confirmation p{
+    font-size: 18px;
+    color:var(--dark-font);
+}

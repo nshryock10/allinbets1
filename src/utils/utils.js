@@ -441,7 +441,6 @@ export const checkUserName = async (username) => {
   
   dataBase.forEach(user => {
     if(user.username == username){
-      console.log('found user name');
       userNameTaken = true;
     }
   })
