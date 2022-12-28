@@ -8,8 +8,6 @@ function TableRow(props) {
     const columns = props.columns;
     const [userData, setUserData] = useState([]);
     
-
-
   useEffect(() => {
     //Get payment info
       getData();

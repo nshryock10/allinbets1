@@ -69,6 +69,7 @@ h2{
 }
 .hero-flex-container img{
     width: 50vw;
+    max-width: 277px;
     height: auto;
 }
 
@@ -82,7 +83,7 @@ h2{
 
 
 
-/* Full Screen Styling */
+/* Full Screen Styling 
 @media screen and (min-width: 760px){
 
     .body{
@@ -97,7 +98,7 @@ h2{
         width: 80%;
         height: 200px;
         
-        /* Color */
+        /* Color 
         color: var(--purple);
     } 
 
@@ -114,26 +115,26 @@ h2{
         height: 100%;
     }
     #hero-button{
-        /* Position */
+        /* Position 
         position: sticky;
         top: 275px;
         left: 10%;
         
-        /* Size */
+        /* Size 
         width: 200px;
         height: 50px;
         
-        /* Design */
+        /* Design 
         border: none;
         border-radius: 5px;
         background-color: var(--green);
 
-        /* Font */
+        /* Font 
         font-weight: 400px;
         color: white;
     }
 }
-
+*/
 /* -------------- Instructions -----------------------*/
 .question-icon {
     width: 45px;

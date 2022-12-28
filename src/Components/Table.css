@@ -40,6 +40,20 @@ table{
     /* Font */
 }
 
+thead{
+    display: block;
+}
+
+tbody {
+    display: block;
+    max-height: 400px;
+    overflow: scroll;
+}
+
+thead th, tbody td{
+    width: 150px;
+}
+
 td, th {
     padding-left: 8px;
 }
@@ -53,6 +67,7 @@ tbody tr {
     height: 30px;
     color: var(--purple);
     background: white;
+    width: 100%;
 }
 
 tbody tr:nth-child(even){

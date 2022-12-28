@@ -39,7 +39,7 @@ function Table(props) {
             </form>
             
         </div>
-        <table>
+        <table className="table">
             <thead>
                 <tr className="table-row">
                     {columns.map(({ label, accessor })=> {

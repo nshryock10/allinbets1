@@ -12,7 +12,7 @@ function HomePage (props) {
 
     const dataBase = props.dataBase;
     const payData = props.paymentData;
-    const pot = 100000;
+    const pot = props.pot;  
     const answerKey = getAnswerKey();
 
     const onClick = () => {

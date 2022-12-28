@@ -11,6 +11,7 @@ function Submit(props) {
   const location = useLocation();
   const questions = location.state?.questions;
   const updateUser = props.updateDataBase;
+  const updateUserCount = props.updateUserCount;
   const userInfo = location.state?.user 
   const CLIENT_ID = 'AflGXddWb4KVamd5un9eY3zdBwkFwm0OfRztruHurzIKaHAj_ZEm4QSzFcaXDXW4gqDhlsu30_s2rmEC';
   const sb_ID = 'AaP9oeFAJXTholgWoJH_xSeqcl-3C_SdpcaJ_UjpkbtO2tGl4i9qx1kSGr4WHX_IPT72yr-p9LgAqbov';
@@ -24,9 +25,10 @@ function Submit(props) {
   }
 
   //Paypal details
-  const buyInAmount =  "10";
-  const processingFee = "1.83";
-  const total = "11.83";
+  //Get this info from the data base
+  const buyInAmount =  props.buyIn;
+  const processingFee = props.fees;
+  const total = Number(buyInAmount) + Number(processingFee);
   const currency = "USD";
   const style = { layout: "vertical" };
   const [paymentCompleted, setPaymentCompleted] = useState(false);
@@ -127,16 +129,14 @@ function Submit(props) {
       return false;
     }
     addUserToDB(user);
+    //Update user count to have data refresh on home page
+    updateUserCount(props.userCount++)
+    
   }
 
   useEffect(() => {
     updateUser(user, user.index);
   }, [user])
-
-
-/*
-  
-*/
 
   return (
     <div className="main">

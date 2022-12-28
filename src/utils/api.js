@@ -1,7 +1,7 @@
 import { v4 as uuid4 } from 'uuid';
 //const { v4: uuidv4 } = require("uuid");
 
-const API_ENDPOINT = "http://localhost:3000";
+export const API_ENDPOINT = "http://localhost:3000";
 
 //Get all users from database
 export const getUsers = async () => {
@@ -29,6 +29,19 @@ export const getPaymentInfo = async () => {
     const paymentInfo = await response.json();
 
     return paymentInfo;
+}
+
+export const getGameInfo = async () => {
+    const response = await fetch(`${API_ENDPOINT}/gameinfo`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+          }
+    })
+
+    const gameInfo = await response.json();
+
+    return gameInfo;
 }
 
 export const getUserAnswers = async (id) => {

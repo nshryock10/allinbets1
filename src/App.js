@@ -8,30 +8,38 @@ import Answers from './Components/Answers';
 import Nav from './Components/Nav';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { generateUserIndex } from './utils/utils';
-import { getPaymentInfo, getUsers } from './utils/api';
+import { getPaymentInfo, getUsers, getGameInfo } from './utils/api';
 
 function App() {
 
   const [dataBase, setDataBase] = useState([]);  
-  const [paymentInfo, setPaymentInfo] = useState([])
+  const [paymentInfo, setPaymentInfo] = useState([]);
+  const [userCount, setUserCount] = useState(0);
+  const [gameInfo, setGameInfo] = useState({});
 
   useEffect(() => {
+
     if(dataBase.length === 0){
       getDataBase();
+      console.log(gameInfo)
     }
-  }, [])
+
+  }, [userCount])
 
   const getDataBase = async () => {
     //Callback function to set data
-    const setMainDataBase = (data, paymentData) => {
+    const setMainDataBase = (data, paymentData, gameInfo) => {
       setDataBase(data);
-      setPaymentInfo(paymentData);
+      //setPaymentInfo(paymentData);
+      setGameInfo(gameInfo[0]);
+
     } 
 
     //Postgres data
     const dbData = await getUsers();
     const payData = await getPaymentInfo();
-    setMainDataBase(dbData, payData);
+    const gameInfo = await getGameInfo();
+    setMainDataBase(dbData, payData, gameInfo);
   }
 
   const addUser = (user, index) => {
@@ -50,11 +58,18 @@ function App() {
         <div className="content-container">
           <Nav />
           <Routes> 
-            <Route path='/' element={<HomePage dataBase={dataBase}  paymentData={paymentInfo}/>} />
+            <Route path='/' element={<HomePage dataBase={dataBase}  pot={gameInfo.pot} />} />
             <Route path='signup' element={<SignUp />} />
             <Route path='questions' element={<Questions />} />
             <Route path='answers' element={<Answers dataBase={dataBase} />} />
-            <Route path='checkout' element={<Submit updateDataBase={addUser} test='test' />} />
+            <Route path='checkout' element={<Submit 
+                                              updateUserCount={setUserCount} 
+                                              userCount={userCount} 
+                                              updateDataBase={addUser}
+                                              buyIn={gameInfo.buy_in}
+                                              fees={gameInfo.fees}
+                                              />} 
+            />
           </Routes>
         </div>
         <footer>
